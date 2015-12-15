@@ -12,8 +12,7 @@ import SceneKit
 
 class ViewController: UIViewController
 {
-    
-    lazy var sceneKitView:SCNView =
+    lazy var sceneKitView: SCNView =
     {
         let scene = SCNScene()
         let view = SCNView()
@@ -21,19 +20,45 @@ class ViewController: UIViewController
         view.backgroundColor = UIColor.blackColor()
         view.scene = scene
         
-        view.allowsCameraControl = true // !!!!!!
-        
         view.showsStatistics = true
         
         return view
     }()
     
+    lazy var christmasTreeCompositeNode: SCNNode =
+    {
+        let cone = SCNCone(topRadius: 0, bottomRadius: 0.5, height: 1.5)
+        let trunk = SCNCylinder(radius: 0.25, height: 0.5)
+        
+        let coneNode = SCNNode(geometry: cone)
+        let trunkNode = SCNNode(geometry: trunk)
+        
+        coneNode.position = SCNVector3(0, 0.5, 0)
+        trunkNode.position = SCNVector3(0, -0.5, 0)
+        
+        let coneMaterial = SCNMaterial()
+        coneMaterial.diffuse.contents = UIColor.greenColor()
+        cone.materials = [coneMaterial]
+        
+        let trunkMaterial = SCNMaterial()
+        trunkMaterial.diffuse.contents = UIColor.brownColor()
+        trunk.materials = [trunkMaterial]
+        
+        let christmasTreeCompositeNode = SCNNode()
+        christmasTreeCompositeNode.addChildNode(coneNode)
+        christmasTreeCompositeNode.addChildNode(trunkNode)
+        
+        return christmasTreeCompositeNode
+    }()
+    
     var scene: SCNScene
-        {
-            return sceneKitView.scene!
+    {
+        return sceneKitView.scene!
     }
     
-    var physicsBodyBox: SCNPhysicsBody!
+    let touchCatchingPlaneNode = SCNNode(geometry: SCNPlane(width: 20, height: 20))
+   
+    let ballNode = SCNNode(geometry: SCNSphere(radius: 0.25))
     
     override func viewDidLoad()
     {
@@ -41,15 +66,58 @@ class ViewController: UIViewController
         
         view.addSubview(sceneKitView)
         
-        physicsBodyBox = setupSceneKit()
+        setupSceneKit()
     }
+    
+    // MARK: Touch handling
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
     {
-        physicsBodyBox.applyForce(SCNVector3(0, 0, -40), impulse: true)
+        guard let touch = touches.first else
+        {
+            return
+        }
+        
+        positionBallFromTouch(touch)
     }
     
-    func setupSceneKit() -> SCNPhysicsBody
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?)
+    {
+        guard let touch = touches.first else
+        {
+            return
+        }
+        
+        positionBallFromTouch(touch)
+    }
+    
+    override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)
+    {
+        let physicsBodyBall = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic,
+            shape: SCNPhysicsShape(geometry: ballNode.geometry!, options: nil))
+        
+        ballNode.physicsBody = physicsBodyBall
+        
+        physicsBodyBall.applyForce(SCNVector3(0, 0, -40), impulse: true)
+    }
+    
+    func positionBallFromTouch(touch: UITouch)
+    {
+        guard let hitTestResult:SCNHitTestResult = sceneKitView.hitTest(touch.locationInView(view),
+            options: nil)
+            .filter( { $0.node == touchCatchingPlaneNode }).first else
+        {
+            return
+        }
+        
+        ballNode.position = SCNVector3(hitTestResult.localCoordinates.x,
+            hitTestResult.localCoordinates.y,
+            5)
+    }
+    
+    // MARK: SceneKit set up
+    
+    func setupSceneKit()
     {
         // Camera
         
@@ -74,64 +142,41 @@ class ViewController: UIViewController
             scene.rootNode.addChildNode(lightNode)
         }
         
-        // Cylinders
+        // Christmas Trees
         
-        for z in 0 ... 6
+        for z in 0 ... 1 // was 6
         {
             for x in 0 ... z
             {
-                let cone = SCNCone(topRadius: 0, bottomRadius: 0.5, height: 1.5)
-                let trunk = SCNCylinder(radius: 0.25, height: 0.5)
+                let christmasTreeeNode = christmasTreeCompositeNode.flattenedClone()
                 
-                let coneNode = SCNNode(geometry: cone)
-                let trunkNode = SCNNode(geometry: trunk)
-                
-                coneNode.position = SCNVector3(0, 0.5, 0)
-                trunkNode.position = SCNVector3(0, -0.5, 0)
-                
-                let foo = SCNNode()
-                foo.addChildNode(coneNode)
-                foo.addChildNode(trunkNode)
-                
-                let cylinderNode = foo.flattenedClone()
-                
-                cylinderNode.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic,
-                    shape: SCNPhysicsShape(geometry: cylinderNode.geometry!, options: nil))
+                christmasTreeeNode.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic,
+                    shape: SCNPhysicsShape(geometry: christmasTreeeNode.geometry!, options: nil))
                 
                 let spacing = Float(2.5)
                 
-                cylinderNode.position = SCNVector3((-spacing * Float(z) / 2) + (Float(x) * spacing),
+                christmasTreeeNode.position = SCNVector3((-spacing * Float(z) / 2) + (Float(x) * spacing),
                     -1,
                     -Float(z) * spacing)
                 
-                scene.rootNode.addChildNode(cylinderNode)
+                scene.rootNode.addChildNode(christmasTreeeNode)
             }
         }
         
         // Box
+        ballNode.position = SCNVector3(0, 0, 5)
+        ballNode.rotation = SCNVector4(0.2, 0.3, 0.4, 1)
         
-        let boxNode = SCNNode(geometry: SCNSphere(radius: 0.25))
-        boxNode.position = SCNVector3(0, 0, 5)
-        boxNode.rotation = SCNVector4(0.2, 0.3, 0.4, 1)
-        
-        scene.rootNode.addChildNode(boxNode)
-        
+        scene.rootNode.addChildNode(ballNode)
+
         // Floor
         
         let floor = SCNFloor()
-        floor.reflectivity = 0
         let floorNode = SCNNode(geometry: floor)
         floorNode.position = SCNVector3(0, -1, 0)
         
         scene.rootNode.addChildNode(floorNode)
-        
-        // Physics for box
-        
-        let physicsBodyBox = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic,
-            shape: SCNPhysicsShape(geometry: boxNode.geometry!, options: nil))
-        
-        boxNode.physicsBody = physicsBodyBox
-        
+      
         // Physics for floor
         
         let physicsBodyFloor = SCNPhysicsBody(type: SCNPhysicsBodyType.Static,
@@ -139,9 +184,12 @@ class ViewController: UIViewController
         
         floorNode.physicsBody = physicsBodyFloor
         
-        // ---
+        // Touch catching plane
         
-        return physicsBodyBox
+        touchCatchingPlaneNode.opacity = 0.000001
+        
+        scene.rootNode.addChildNode(touchCatchingPlaneNode)
+        touchCatchingPlaneNode.position = ballNode.position
     }
     
     override func viewDidLayoutSubviews()
