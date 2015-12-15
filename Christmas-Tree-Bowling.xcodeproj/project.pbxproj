@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E6349D31C1FFB1600DEB44A /* bumpMap.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E6349D21C1FFB1600DEB44A /* bumpMap.jpg */; };
 		3ED74A181C1FD2870081169A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED74A171C1FD2870081169A /* AppDelegate.swift */; };
 		3ED74A1A1C1FD2870081169A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED74A191C1FD2870081169A /* ViewController.swift */; };
 		3ED74A1D1C1FD2870081169A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3ED74A1B1C1FD2870081169A /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3E6349D21C1FFB1600DEB44A /* bumpMap.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bumpMap.jpg; path = assets/bumpMap.jpg; sourceTree = "<group>"; };
 		3ED74A141C1FD2870081169A /* Christmas-Tree-Bowling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Christmas-Tree-Bowling.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED74A171C1FD2870081169A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3ED74A191C1FD2870081169A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -35,6 +37,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E6349D11C1FFB0900DEB44A /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				3E6349D21C1FFB1600DEB44A /* bumpMap.jpg */,
+			);
+			name = assets;
+			sourceTree = "<group>";
+		};
 		3ED74A0B1C1FD2870081169A = {
 			isa = PBXGroup;
 			children = (
@@ -54,6 +64,7 @@
 		3ED74A161C1FD2870081169A /* Christmas-Tree-Bowling */ = {
 			isa = PBXGroup;
 			children = (
+				3E6349D11C1FFB0900DEB44A /* assets */,
 				3ED74A171C1FD2870081169A /* AppDelegate.swift */,
 				3ED74A191C1FD2870081169A /* ViewController.swift */,
 				3ED74A1B1C1FD2870081169A /* Main.storyboard */,
@@ -122,6 +133,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E6349D31C1FFB1600DEB44A /* bumpMap.jpg in Resources */,
 				3ED74A221C1FD2870081169A /* LaunchScreen.storyboard in Resources */,
 				3ED74A1F1C1FD2870081169A /* Assets.xcassets in Resources */,
 				3ED74A1D1C1FD2870081169A /* Main.storyboard in Resources */,
@@ -286,6 +298,7 @@
 				3ED74A281C1FD2870081169A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

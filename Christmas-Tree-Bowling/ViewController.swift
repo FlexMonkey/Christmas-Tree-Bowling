@@ -171,7 +171,17 @@ class ViewController: UIViewController
 
         // Floor
         
+        let floorMaterial = SCNMaterial()
+//        floorMaterial.normal.contents = UIImage(named: "bumpMap.jpg")
+//        floorMaterial.normal.wrapS = SCNWrapMode.Repeat
+//        floorMaterial.normal.wrapT = SCNWrapMode.Repeat
+
+        floorMaterial.diffuse.contents = UIColor.whiteColor()
+        
         let floor = SCNFloor()
+        floor.reflectivity = 0.2
+        floor.materials = [floorMaterial]
+        
         let floorNode = SCNNode(geometry: floor)
         floorNode.position = SCNVector3(0, -1, 0)
         
