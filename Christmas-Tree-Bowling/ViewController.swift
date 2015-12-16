@@ -29,12 +29,15 @@ class ViewController: UIViewController
     {
         let cone = SCNCone(topRadius: 0, bottomRadius: 0.5, height: 1.5)
         let trunk = SCNCylinder(radius: 0.25, height: 0.5)
+        let bauble = SCNSphere(radius: 0.1)
         
         let coneNode = SCNNode(geometry: cone)
         let trunkNode = SCNNode(geometry: trunk)
+        let baubleNode = SCNNode(geometry: bauble)
         
         coneNode.position = SCNVector3(0, 0.5, 0)
         trunkNode.position = SCNVector3(0, -0.5, 0)
+        baubleNode.position = SCNVector3(0, 1.2, 0)
         
         let coneMaterial = SCNMaterial()
         coneMaterial.diffuse.contents = UIColor.greenColor()
@@ -44,9 +47,18 @@ class ViewController: UIViewController
         trunkMaterial.diffuse.contents = UIColor.brownColor()
         trunk.materials = [trunkMaterial]
         
+        let baubleMaterial = SCNMaterial()
+        baubleMaterial.reflective.contents = UIImage(named: "reflection.jpg")
+        baubleMaterial.reflective.intensity = 0.5
+        baubleMaterial.diffuse.contents = UIColor(red: 1, green: 0.75, blue: 9.75, alpha: 1)
+        baubleMaterial.shininess = 0.5
+        baubleMaterial.specular.contents = UIColor.whiteColor()
+        bauble.materials = [baubleMaterial]
+        
         let christmasTreeCompositeNode = SCNNode()
         christmasTreeCompositeNode.addChildNode(coneNode)
         christmasTreeCompositeNode.addChildNode(trunkNode)
+        christmasTreeCompositeNode.addChildNode(baubleNode)
         
         return christmasTreeCompositeNode
     }()
@@ -77,6 +89,8 @@ class ViewController: UIViewController
         {
             return
         }
+        
+        ballNode.physicsBody = nil
         
         positionBallFromTouch(touch)
     }
@@ -144,7 +158,7 @@ class ViewController: UIViewController
         
         // Christmas Trees
         
-        for z in 0 ... 1 // was 6
+        for z in 0 ... 4
         {
             for x in 0 ... z
             {
@@ -172,14 +186,19 @@ class ViewController: UIViewController
         // Floor
         
         let floorMaterial = SCNMaterial()
-//        floorMaterial.normal.contents = UIImage(named: "bumpMap.jpg")
-//        floorMaterial.normal.wrapS = SCNWrapMode.Repeat
-//        floorMaterial.normal.wrapT = SCNWrapMode.Repeat
-
-        floorMaterial.diffuse.contents = UIColor.whiteColor()
+        floorMaterial.normal.contents = UIImage(named: "bumpMap.jpg")
+        floorMaterial.normal.wrapS = SCNWrapMode.Repeat
+        floorMaterial.normal.wrapT = SCNWrapMode.Repeat
+        floorMaterial.normal.contentsTransform = SCNMatrix4MakeScale(25, 25, 1)
+        floorMaterial.normal.intensity = 0.25
+   
+        floorMaterial.diffuse.contents = UIColor(red: 0.95, green: 0.95, blue: 1, alpha: 1)
+        floorMaterial.ambient.contents = UIColor(red: 0.9, green: 0.9, blue: 0.95, alpha: 1)
+        floorMaterial.specular.contents = UIColor.whiteColor()
         
         let floor = SCNFloor()
-        floor.reflectivity = 0.2
+        floor.reflectivity = 0.1
+      
         floor.materials = [floorMaterial]
         
         let floorNode = SCNNode(geometry: floor)
