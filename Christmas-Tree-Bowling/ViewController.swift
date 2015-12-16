@@ -19,7 +19,6 @@ class ViewController: UIViewController
     {
         let scene = SCNScene()
         let view = SCNView()
-        
         view.backgroundColor = UIColor.blackColor()
         view.scene = scene
         
@@ -51,7 +50,7 @@ class ViewController: UIViewController
         trunk.materials = [trunkMaterial]
         
         let baubleMaterial = SCNMaterial()
-        baubleMaterial.reflective.contents = UIImage(named: "reflection.jpg")
+        // baubleMaterial.reflective.contents = UIImage(named: "reflection.jpg")
         baubleMaterial.reflective.intensity = 0.5
         baubleMaterial.diffuse.contents = UIColor(red: 1, green: 0.75, blue: 9.75, alpha: 1)
         baubleMaterial.shininess = 0.5
@@ -95,6 +94,7 @@ class ViewController: UIViewController
         
         ballNode.physicsBody = nil
         pointerNode.hidden = false
+        ballNode.hidden = false
         
         positionBallFromTouch(touch)
     }
@@ -152,8 +152,6 @@ class ViewController: UIViewController
         pointerNode.position = SCNVector3(hitTestResult.localCoordinates.x, hitTestResult.localCoordinates.y, 5)
         pointerNode.eulerAngles = SCNVector3(touch.altitudeAngle, 0.0, 0 - touch.azimuthAngleInView(view) - halfPi)
         
-
-        
         ballNode.position = SCNVector3(hitTestResult.localCoordinates.x,
             hitTestResult.localCoordinates.y,
             5)
@@ -171,15 +169,23 @@ class ViewController: UIViewController
         
         scene.rootNode.addChildNode(cameraNode)
         
-        // Omni light
+        // Lights
         
-        for lightPosition in [SCNVector3(-10, 0, 10), SCNVector3(10, 10, -10)]
+        let centreNode = SCNNode()
+        centreNode.position = SCNVector3(x: 0, y: 0, z: 2)
+        scene.rootNode.addChildNode(centreNode)
+        
+        for lightPosition in [SCNVector3(-10, 5, 10), SCNVector3(5, 5, 10)]
         {
             let light = SCNLight()
-            light.type =  SCNLightTypeOmni
+            light.type =  SCNLightTypeDirectional
+            light.castsShadow = true
             
             let lightNode = SCNNode()
             lightNode.light = light
+            
+            let constraint = SCNLookAtConstraint(target: centreNode)
+            lightNode.constraints = [constraint]
             
             lightNode.position = lightPosition
             
@@ -214,6 +220,7 @@ class ViewController: UIViewController
         // Box
         ballNode.position = SCNVector3(0, 0, 5)
         ballNode.rotation = SCNVector4(0.2, 0.3, 0.4, 1)
+        ballNode.hidden = true
         
         scene.rootNode.addChildNode(ballNode)
 
