@@ -12,6 +12,9 @@ import SceneKit
 
 class ViewController: UIViewController
 {
+    let halfPi = CGFloat(M_PI_2)
+    let tau = Float(M_PI)
+    
     lazy var sceneKitView: SCNView =
     {
         let scene = SCNScene()
@@ -69,8 +72,8 @@ class ViewController: UIViewController
     }
     
     let touchCatchingPlaneNode = SCNNode(geometry: SCNPlane(width: 20, height: 20))
-   
     let ballNode = SCNNode(geometry: SCNSphere(radius: 0.25))
+    let pointerNode = SCNNode(geometry: SCNCapsule(capRadius: 0.05, height: 10))
     
     override func viewDidLoad()
     {
@@ -91,6 +94,7 @@ class ViewController: UIViewController
         }
         
         ballNode.physicsBody = nil
+        pointerNode.hidden = false
         
         positionBallFromTouch(touch)
     }
@@ -107,12 +111,33 @@ class ViewController: UIViewController
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)
     {
+        guard let touch = touches.first else
+        {
+            return
+        }
+        
         let physicsBodyBall = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic,
             shape: SCNPhysicsShape(geometry: ballNode.geometry!, options: nil))
         
         ballNode.physicsBody = physicsBodyBall
         
-        physicsBodyBall.applyForce(SCNVector3(0, 0, -40), impulse: true)
+        
+        let eulerAngles = SCNVector3(touch.altitudeAngle, 0.0, 0 - touch.azimuthAngleInView(view) - halfPi)
+        
+        let x = cos(eulerAngles.x) * cos(eulerAngles.z) * tau
+        let y = -sin(eulerAngles.x) * cos(eulerAngles.z) * tau
+        let z = sin(eulerAngles.z) * tau
+        
+        print(x, y, z)
+        
+        let direction = SCNVector3(z,
+            y,
+            -20)
+        
+        //physicsBodyBall.applyForce(SCNVector3(0, 0, -40), impulse: true)
+        physicsBodyBall.applyForce(direction, impulse: true)
+        
+        pointerNode.hidden = true
     }
     
     func positionBallFromTouch(touch: UITouch)
@@ -124,11 +149,16 @@ class ViewController: UIViewController
             return
         }
         
+        pointerNode.position = SCNVector3(hitTestResult.localCoordinates.x, hitTestResult.localCoordinates.y, 5)
+        pointerNode.eulerAngles = SCNVector3(touch.altitudeAngle, 0.0, 0 - touch.azimuthAngleInView(view) - halfPi)
+        
+
+        
         ballNode.position = SCNVector3(hitTestResult.localCoordinates.x,
             hitTestResult.localCoordinates.y,
             5)
     }
-    
+  
     // MARK: SceneKit set up
     
     func setupSceneKit()
@@ -176,6 +206,10 @@ class ViewController: UIViewController
                 scene.rootNode.addChildNode(christmasTreeeNode)
             }
         }
+        
+        // Pointer
+        pointerNode.hidden = true
+        scene.rootNode.addChildNode(pointerNode)
         
         // Box
         ballNode.position = SCNVector3(0, 0, 5)
