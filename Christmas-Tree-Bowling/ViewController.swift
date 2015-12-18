@@ -13,7 +13,7 @@ import SceneKit
 class ViewController: UIViewController
 {
     let halfPi = CGFloat(M_PI_2)
-    let tau = Float(M_PI)
+    let velocity = CGFloat(20)
     
     lazy var sceneKitView: SCNView =
     {
@@ -50,7 +50,7 @@ class ViewController: UIViewController
         trunk.materials = [trunkMaterial]
         
         let baubleMaterial = SCNMaterial()
-        // baubleMaterial.reflective.contents = UIImage(named: "reflection.jpg")
+        baubleMaterial.reflective.contents = UIImage(named: "reflection.jpg")
         baubleMaterial.reflective.intensity = 0.5
         baubleMaterial.diffuse.contents = UIColor(red: 1, green: 0.75, blue: 9.75, alpha: 1)
         baubleMaterial.shininess = 0.5
@@ -72,7 +72,6 @@ class ViewController: UIViewController
     
     let touchCatchingPlaneNode = SCNNode(geometry: SCNPlane(width: 20, height: 20))
     let ballNode = SCNNode(geometry: SCNSphere(radius: 0.25))
-    let pointerNode = SCNNode(geometry: SCNCapsule(capRadius: 0.05, height: 10))
     
     override func viewDidLoad()
     {
@@ -93,7 +92,6 @@ class ViewController: UIViewController
         }
         
         ballNode.physicsBody = nil
-        pointerNode.hidden = false
         ballNode.hidden = false
         
         positionBallFromTouch(touch)
@@ -121,23 +119,17 @@ class ViewController: UIViewController
         
         ballNode.physicsBody = physicsBodyBall
         
+        let altitude = ((halfPi - touch.altitudeAngle) / halfPi)
         
-        let eulerAngles = SCNVector3(touch.altitudeAngle, 0.0, 0 - touch.azimuthAngleInView(view) - halfPi)
-        
-        let x = cos(eulerAngles.x) * cos(eulerAngles.z) * tau
-        let y = -sin(eulerAngles.x) * cos(eulerAngles.z) * tau
-        let z = sin(eulerAngles.z) * tau
-        
-        print(x, y, z)
-        
-        let direction = SCNVector3(z,
-            y,
-            -20)
-        
-        //physicsBodyBall.applyForce(SCNVector3(0, 0, -40), impulse: true)
+        let xx = -touch.azimuthUnitVectorInView(view).dx * altitude
+        let yy = touch.azimuthUnitVectorInView(view).dy * altitude
+        let zz = 1 - sqrt(xx * xx + yy * yy)
+       
+        let direction = SCNVector3(xx * velocity,
+            yy * velocity,
+            zz * -velocity)
+    
         physicsBodyBall.applyForce(direction, impulse: true)
-        
-        pointerNode.hidden = true
     }
     
     func positionBallFromTouch(touch: UITouch)
@@ -148,10 +140,7 @@ class ViewController: UIViewController
         {
             return
         }
-        
-        pointerNode.position = SCNVector3(hitTestResult.localCoordinates.x, hitTestResult.localCoordinates.y, 5)
-        pointerNode.eulerAngles = SCNVector3(touch.altitudeAngle, 0.0, 0 - touch.azimuthAngleInView(view) - halfPi)
-        
+       
         ballNode.position = SCNVector3(hitTestResult.localCoordinates.x,
             hitTestResult.localCoordinates.y,
             5)
@@ -172,14 +161,15 @@ class ViewController: UIViewController
         // Lights
         
         let centreNode = SCNNode()
-        centreNode.position = SCNVector3(x: 0, y: 0, z: 2)
+        centreNode.position = SCNVector3(x: 0, y: 1, z: -2)
         scene.rootNode.addChildNode(centreNode)
         
-        for lightPosition in [SCNVector3(-10, 5, 10), SCNVector3(5, 5, 10)]
+        for lightPosition in [SCNVector3(-10, 5, 10), SCNVector3(10, 5, 10)]
         {
             let light = SCNLight()
             light.type =  SCNLightTypeDirectional
-            light.castsShadow = true
+            light.castsShadow = false
+            light.shadowSampleCount = 3
             
             let lightNode = SCNNode()
             lightNode.light = light
@@ -217,10 +207,19 @@ class ViewController: UIViewController
         pointerNode.hidden = true
         scene.rootNode.addChildNode(pointerNode)
         
-        // Box
+        // Ball
         ballNode.position = SCNVector3(0, 0, 5)
         ballNode.rotation = SCNVector4(0.2, 0.3, 0.4, 1)
         ballNode.hidden = true
+        
+        let ballMaterial = SCNMaterial()
+        ballMaterial.diffuse.contents = UIColor.blueColor()
+        ballMaterial.specular.contents = UIColor.whiteColor()
+        ballMaterial.reflective.contents = UIImage(named: "winterNight.jpg")
+        ballMaterial.reflective.intensity = 0.4
+        ballMaterial.shininess = 0.9
+        
+        ballNode.geometry!.materials = [ballMaterial]
         
         scene.rootNode.addChildNode(ballNode)
 
@@ -232,23 +231,22 @@ class ViewController: UIViewController
         floorMaterial.normal.wrapT = SCNWrapMode.Repeat
         floorMaterial.normal.contentsTransform = SCNMatrix4MakeScale(25, 25, 1)
         floorMaterial.normal.intensity = 0.25
-   
+        
         floorMaterial.diffuse.contents = UIColor(red: 0.95, green: 0.95, blue: 1, alpha: 1)
         floorMaterial.ambient.contents = UIColor(red: 0.9, green: 0.9, blue: 0.95, alpha: 1)
         floorMaterial.specular.contents = UIColor.whiteColor()
-        
+   
         let floor = SCNFloor()
-        floor.reflectivity = 0.1
       
-        floor.materials = [floorMaterial]
-        
         let floorNode = SCNNode(geometry: floor)
         floorNode.position = SCNVector3(0, -1, 0)
         
+        floor.materials = [floorMaterial]
+        floor.reflectivity = 0.75
+        floor.reflectionResolutionScaleFactor = 1
+        
         scene.rootNode.addChildNode(floorNode)
       
-        // Physics for floor
-        
         let physicsBodyFloor = SCNPhysicsBody(type: SCNPhysicsBodyType.Static,
             shape: SCNPhysicsShape(geometry: floorNode.geometry!, options: nil))
         
@@ -257,7 +255,7 @@ class ViewController: UIViewController
         // Touch catching plane
         
         touchCatchingPlaneNode.opacity = 0.000001
-        
+        touchCatchingPlaneNode.castsShadow = false
         scene.rootNode.addChildNode(touchCatchingPlaneNode)
         touchCatchingPlaneNode.position = ballNode.position
     }
