@@ -202,11 +202,7 @@ class ViewController: UIViewController
                 scene.rootNode.addChildNode(christmasTreeeNode)
             }
         }
-        
-        // Pointer
-        pointerNode.hidden = true
-        scene.rootNode.addChildNode(pointerNode)
-        
+      
         // Ball
         ballNode.position = SCNVector3(0, 0, 5)
         ballNode.rotation = SCNVector4(0.2, 0.3, 0.4, 1)
