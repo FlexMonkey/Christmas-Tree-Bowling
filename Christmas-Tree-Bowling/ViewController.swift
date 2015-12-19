@@ -374,16 +374,16 @@ extension ViewController: SCNPhysicsContactDelegate
     {
         print(contact.collisionImpulse)
         
-        if contact.nodeA.physicsBody?.contactTestBitMask == 1 ||  contact.nodeB.physicsBody?.contactTestBitMask == 1
+        if contact.nodeA.physicsBody?.contactTestBitMask == 1 && contact.nodeB.physicsBody?.contactTestBitMask != 2
         {
-            conductor.play(frequency: 440, amplitude: 0.05,  playMetalBar: false)
+            conductor.play(frequency: 440, amplitude: 0.025,  playMetalBar: false)
         }
         
         
-        if contact.nodeA.physicsBody?.contactTestBitMask == 2 && contact.nodeB.physicsBody?.contactTestBitMask == 1  ||
-            contact.nodeB.physicsBody?.contactTestBitMask == 2 && contact.nodeA.physicsBody?.contactTestBitMask == 1
+        if (contact.nodeA.physicsBody?.contactTestBitMask == 2 && contact.nodeB.physicsBody?.contactTestBitMask == 1) ||
+            (contact.nodeA.physicsBody?.contactTestBitMask == 1 && contact.nodeB.physicsBody?.contactTestBitMask == 2)
         {
-            conductor.play(frequency: 440, amplitude: 0.1,  playMetalBar: true)
+            conductor.play(frequency: 440, amplitude: 0.05,  playMetalBar: true)
         }
     }
   
@@ -417,7 +417,7 @@ class MetalBar: AKInstrument
         addNoteProperty(note.frequency)
         addNoteProperty(note.amplitude)
         
-        let instrument = AKStruckMetalBar.presetThickDullMetalBar()
+        let instrument = AKStruckMetalBar.presetSmallHollowMetalBar()
         
         setAudioOutput(instrument)
     }
