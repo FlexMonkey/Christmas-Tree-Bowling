@@ -118,6 +118,7 @@ class ViewController: UIViewController
             shape: SCNPhysicsShape(geometry: ballNode.geometry!, options: nil))
         
         ballNode.physicsBody = physicsBodyBall
+        ballNode.physicsBody?.categoryBitMask = 1
         
         let altitude = ((halfPi - touch.altitudeAngle) / halfPi)
         
@@ -193,6 +194,8 @@ class ViewController: UIViewController
                 christmasTreeeNode.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic,
                     shape: SCNPhysicsShape(geometry: christmasTreeeNode.geometry!, options: nil))
                 
+                christmasTreeeNode.physicsBody?.categoryBitMask = 1
+                
                 let spacing = Float(2.5)
                 
                 christmasTreeeNode.position = SCNVector3((-spacing * Float(z) / 2) + (Float(x) * spacing),
@@ -228,6 +231,9 @@ class ViewController: UIViewController
         floorMaterial.normal.contentsTransform = SCNMatrix4MakeScale(25, 25, 1)
         floorMaterial.normal.intensity = 0.25
         
+        floorMaterial.selfIllumination.contents = UIColor.whiteColor()
+        floorMaterial.selfIllumination.intensity = 0.25
+        
         floorMaterial.diffuse.contents = UIColor(red: 0.95, green: 0.95, blue: 1, alpha: 1)
         floorMaterial.ambient.contents = UIColor(red: 0.9, green: 0.9, blue: 0.95, alpha: 1)
         floorMaterial.specular.contents = UIColor.whiteColor()
@@ -254,6 +260,42 @@ class ViewController: UIViewController
         touchCatchingPlaneNode.castsShadow = false
         scene.rootNode.addChildNode(touchCatchingPlaneNode)
         touchCatchingPlaneNode.position = ballNode.position
+        
+        // Snow
+
+        let snowPlane = SCNPlane(width: 10, height: 5)
+        let snowNode = SCNNode(geometry: snowPlane)
+
+        snowNode.position = SCNVector3(0, 7, 0)
+        snowNode.eulerAngles = SCNVector3(Float(M_PI_2), Float(0.0), Float(0.0))
+        
+        let field = SCNPhysicsField.noiseFieldWithSmoothness(1, animationSpeed: 0.1)
+        field.falloffExponent = 0
+        field.strength = 0.5
+        
+        snowNode.physicsField = field
+        
+         field.categoryBitMask = 2
+        snowNode.categoryBitMask = 2
+        
+        scene.rootNode.addChildNode(snowNode)
+        
+        let snowParticleSystem = SCNParticleSystem()
+        snowParticleSystem.birthRate = 750
+        snowParticleSystem.particleLifeSpan = 10
+        snowParticleSystem.particleDiesOnCollision = true
+        snowParticleSystem.colliderNodes = [floorNode]
+        snowParticleSystem.warmupDuration = 10
+        snowParticleSystem.affectedByGravity = false
+        snowParticleSystem.acceleration = SCNVector3(0, -0.25, 0)
+        
+        snowParticleSystem.emitterShape = snowNode.geometry!
+
+        snowParticleSystem.particleSize = 0.008
+        
+        snowNode.addParticleSystem(snowParticleSystem)
+
+        snowParticleSystem.affectedByPhysicsFields = true
     }
     
     override func viewDidLayoutSubviews()
