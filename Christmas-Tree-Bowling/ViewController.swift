@@ -72,6 +72,7 @@ class ViewController: UIViewController
     
     let touchCatchingPlaneNode = SCNNode(geometry: SCNPlane(width: 20, height: 20))
     let ballNode = SCNNode(geometry: SCNSphere(radius: 0.25))
+    let pointerNode = SCNNode(geometry: SCNCone(topRadius: 0.1, bottomRadius: 0, height: 0.4))
     
     override func viewDidLoad()
     {
@@ -93,6 +94,8 @@ class ViewController: UIViewController
         
         ballNode.physicsBody = nil
         ballNode.hidden = false
+        
+        pointerNode.hidden = false
         
         positionBallFromTouch(touch)
     }
@@ -131,6 +134,8 @@ class ViewController: UIViewController
             zz * -velocity)
     
         physicsBodyBall.applyForce(direction, impulse: true)
+        
+        pointerNode.hidden = true
     }
     
     func positionBallFromTouch(touch: UITouch)
@@ -142,6 +147,9 @@ class ViewController: UIViewController
             return
         }
        
+        pointerNode.position = SCNVector3(hitTestResult.localCoordinates.x, hitTestResult.localCoordinates.y, 5)
+        pointerNode.eulerAngles = SCNVector3(touch.altitudeAngle, 0.0, 0 - touch.azimuthAngleInView(view) - halfPi)
+        
         ballNode.position = SCNVector3(hitTestResult.localCoordinates.x,
             hitTestResult.localCoordinates.y,
             5)
@@ -222,6 +230,14 @@ class ViewController: UIViewController
         
         scene.rootNode.addChildNode(ballNode)
 
+        // Pointer
+        
+        pointerNode.hidden = true
+        pointerNode.opacity = 0.75
+        pointerNode.pivot = SCNMatrix4MakeTranslation(0, -0.45, 0)
+        
+        scene.rootNode.addChildNode(pointerNode)
+        
         // Floor
         
         let floorMaterial = SCNMaterial()
