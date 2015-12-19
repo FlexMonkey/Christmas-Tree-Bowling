@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		3E28DD4B1C23CD0E001AA12C /* reflection.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E28DD4A1C23CD0E001AA12C /* reflection.jpg */; };
 		3E28DD4D1C23D1D6001AA12C /* winterNight.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E28DD4C1C23D1D6001AA12C /* winterNight.jpg */; };
+		3E28DD5F1C2527E1001AA12C /* libAudioKit iOS Static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E28DD561C252797001AA12C /* libAudioKit iOS Static.a */; };
+		3E28DD621C252882001AA12C /* AudioKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28DD611C252882001AA12C /* AudioKit.swift */; };
 		3E6349D31C1FFB1600DEB44A /* bumpMap.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E6349D21C1FFB1600DEB44A /* bumpMap.jpg */; };
 		3ED74A181C1FD2870081169A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED74A171C1FD2870081169A /* AppDelegate.swift */; };
 		3ED74A1A1C1FD2870081169A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED74A191C1FD2870081169A /* ViewController.swift */; };
@@ -17,9 +19,50 @@
 		3ED74A221C1FD2870081169A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3ED74A201C1FD2870081169A /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3E28DD551C252797001AA12C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E28DD4E1C252797001AA12C /* AudioKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EA8E93D81AD3C5240057E979;
+			remoteInfo = "AudioKit iOS Static";
+		};
+		3E28DD571C252797001AA12C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E28DD4E1C252797001AA12C /* AudioKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EAA0F5941AE71C8F007CD7C9;
+			remoteInfo = "AudioKit iOS Dynamic";
+		};
+		3E28DD591C252797001AA12C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E28DD4E1C252797001AA12C /* AudioKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EA8E96591AD3C6FC0057E979;
+			remoteInfo = "AudioKit OS X";
+		};
+		3E28DD5B1C252797001AA12C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E28DD4E1C252797001AA12C /* AudioKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EA93645D1BD865230005B849;
+			remoteInfo = "AudioKit tvOS";
+		};
+		3E28DD5D1C2527C7001AA12C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E28DD4E1C252797001AA12C /* AudioKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EA8E93D71AD3C5240057E979;
+			remoteInfo = "AudioKit iOS Static";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		3E28DD4A1C23CD0E001AA12C /* reflection.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = reflection.jpg; path = assets/reflection.jpg; sourceTree = "<group>"; };
 		3E28DD4C1C23D1D6001AA12C /* winterNight.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = winterNight.jpg; path = assets/winterNight.jpg; sourceTree = "<group>"; };
+		3E28DD4E1C252797001AA12C /* AudioKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioKit.xcodeproj; path = AudioKit/AudioKit.xcodeproj; sourceTree = "<group>"; };
+		3E28DD611C252882001AA12C /* AudioKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioKit.swift; path = AudioKit/AudioKit/Platforms/Swift/AudioKit.swift; sourceTree = "<group>"; };
+		3E28DD631C25296C001AA12C /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Header.h; path = "Christmas-Tree-Bowling/Header.h"; sourceTree = "<group>"; };
 		3E6349D21C1FFB1600DEB44A /* bumpMap.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bumpMap.jpg; path = assets/bumpMap.jpg; sourceTree = "<group>"; };
 		3ED74A141C1FD2870081169A /* Christmas-Tree-Bowling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Christmas-Tree-Bowling.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED74A171C1FD2870081169A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -35,12 +78,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E28DD5F1C2527E1001AA12C /* libAudioKit iOS Static.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E28DD4F1C252797001AA12C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3E28DD561C252797001AA12C /* libAudioKit iOS Static.a */,
+				3E28DD581C252797001AA12C /* libAudioKit iOS Dynamic.a */,
+				3E28DD5A1C252797001AA12C /* libAudioKit OS X.a */,
+				3E28DD5C1C252797001AA12C /* libAudioKit tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		3E6349D11C1FFB0900DEB44A /* assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -54,6 +109,9 @@
 		3ED74A0B1C1FD2870081169A = {
 			isa = PBXGroup;
 			children = (
+				3E28DD631C25296C001AA12C /* Header.h */,
+				3E28DD611C252882001AA12C /* AudioKit.swift */,
+				3E28DD4E1C252797001AA12C /* AudioKit.xcodeproj */,
 				3ED74A161C1FD2870081169A /* Christmas-Tree-Bowling */,
 				3ED74A151C1FD2870081169A /* Products */,
 			);
@@ -95,6 +153,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				3E28DD5E1C2527C7001AA12C /* PBXTargetDependency */,
 			);
 			name = "Christmas-Tree-Bowling";
 			productName = "Christmas-Tree-Bowling";
@@ -127,12 +186,49 @@
 			mainGroup = 3ED74A0B1C1FD2870081169A;
 			productRefGroup = 3ED74A151C1FD2870081169A /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3E28DD4F1C252797001AA12C /* Products */;
+					ProjectRef = 3E28DD4E1C252797001AA12C /* AudioKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				3ED74A131C1FD2870081169A /* Christmas-Tree-Bowling */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3E28DD561C252797001AA12C /* libAudioKit iOS Static.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAudioKit iOS Static.a";
+			remoteRef = 3E28DD551C252797001AA12C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3E28DD581C252797001AA12C /* libAudioKit iOS Dynamic.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAudioKit iOS Dynamic.a";
+			remoteRef = 3E28DD571C252797001AA12C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3E28DD5A1C252797001AA12C /* libAudioKit OS X.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAudioKit OS X.a";
+			remoteRef = 3E28DD591C252797001AA12C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3E28DD5C1C252797001AA12C /* libAudioKit tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libAudioKit tvOS.a";
+			remoteRef = 3E28DD5B1C252797001AA12C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3ED74A121C1FD2870081169A /* Resources */ = {
@@ -155,12 +251,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E28DD621C252882001AA12C /* AudioKit.swift in Sources */,
 				3ED74A1A1C1FD2870081169A /* ViewController.swift in Sources */,
 				3ED74A181C1FD2870081169A /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3E28DD5E1C2527C7001AA12C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AudioKit iOS Static";
+			targetProxy = 3E28DD5D1C2527C7001AA12C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		3ED74A1B1C1FD2870081169A /* Main.storyboard */ = {
@@ -271,8 +376,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Christmas-Tree-Bowling/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.flexmonkey.Christmas-Tree-Bowling";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Christmas-Tree-Bowling/Header.h";
+				USER_HEADER_SEARCH_PATHS = "./AudioKit/AudioKit/**";
 			};
 			name = Debug;
 		};
@@ -282,8 +390,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = "Christmas-Tree-Bowling/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = "uk.co.flexmonkey.Christmas-Tree-Bowling";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/Christmas-Tree-Bowling/Header.h";
+				USER_HEADER_SEARCH_PATHS = "./AudioKit/AudioKit/**";
 			};
 			name = Release;
 		};

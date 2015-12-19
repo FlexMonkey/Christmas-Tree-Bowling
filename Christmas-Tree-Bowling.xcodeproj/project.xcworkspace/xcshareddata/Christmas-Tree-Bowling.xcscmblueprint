@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "DF35998F049B627D61BD1B792043EB3E9C51441C",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "DF35998F049B627D61BD1B792043EB3E9C51441C" : 0,
+    "4A795C3056339FDA856B2F63EBCDC656AED71042" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "6D59F390-85F1-428E-9E7D-9A5F1859A8DC",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "DF35998F049B627D61BD1B792043EB3E9C51441C" : "Christmas-Tree-Bowling\/",
+    "4A795C3056339FDA856B2F63EBCDC656AED71042" : "PencilSynth\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Christmas-Tree-Bowling",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Christmas-Tree-Bowling.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/FlexMonkey\/PencilSynth.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "4A795C3056339FDA856B2F63EBCDC656AED71042"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/FlexMonkey\/Christmas-Tree-Bowling.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "DF35998F049B627D61BD1B792043EB3E9C51441C"
+    }
+  ]
+}

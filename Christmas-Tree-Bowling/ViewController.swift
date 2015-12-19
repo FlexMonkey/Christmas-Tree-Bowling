@@ -13,7 +13,7 @@ import SceneKit
 class ViewController: UIViewController
 {
     let halfPi = CGFloat(M_PI_2)
-    let velocity = CGFloat(20)
+    let velocity = CGFloat(30)
     
     lazy var sceneKitView: SCNView =
     {
@@ -21,6 +21,8 @@ class ViewController: UIViewController
         let view = SCNView()
         view.backgroundColor = UIColor.blackColor()
         view.scene = scene
+     
+        scene.physicsWorld.contactDelegate = self
         
         view.showsStatistics = true
         
@@ -73,6 +75,8 @@ class ViewController: UIViewController
     let touchCatchingPlaneNode = SCNNode(geometry: SCNPlane(width: 20, height: 20))
     let ballNode = SCNNode(geometry: SCNSphere(radius: 0.25))
     let pointerNode = SCNNode(geometry: SCNCone(topRadius: 0.1, bottomRadius: 0, height: 0.4))
+    
+    let conductor = Conductor()
     
     override func viewDidLoad()
     {
@@ -134,6 +138,7 @@ class ViewController: UIViewController
             zz * -velocity)
     
         physicsBodyBall.applyForce(direction, impulse: true)
+        physicsBodyBall.contactTestBitMask = 2
         
         pointerNode.hidden = true
     }
@@ -192,6 +197,7 @@ class ViewController: UIViewController
         }
         
         // Christmas Trees
+        let spacing = Float(2.5)
         
         for z in 0 ... 4
         {
@@ -203,8 +209,7 @@ class ViewController: UIViewController
                     shape: SCNPhysicsShape(geometry: christmasTreeeNode.geometry!, options: nil))
                 
                 christmasTreeeNode.physicsBody?.categoryBitMask = 1
-                
-                let spacing = Float(2.5)
+                christmasTreeeNode.physicsBody?.contactTestBitMask = 1
                 
                 christmasTreeeNode.position = SCNVector3((-spacing * Float(z) / 2) + (Float(x) * spacing),
                     -1,
@@ -320,3 +325,107 @@ class ViewController: UIViewController
     }
     
 }
+
+// MARK: SCNPhysicsContactDelegate
+
+extension ViewController: SCNPhysicsContactDelegate
+{
+    func physicsWorld(world: SCNPhysicsWorld, didBeginContact contact: SCNPhysicsContact)
+    {
+        print(contact.collisionImpulse)
+        
+        if contact.nodeA.physicsBody?.contactTestBitMask == 1 ||  contact.nodeB.physicsBody?.contactTestBitMask == 1
+        {
+            conductor.play(frequency: 440, amplitude: 0.3,  playMetalBar: false)
+        }
+        
+        
+        if contact.nodeA.physicsBody?.contactTestBitMask == 2 && contact.nodeB.physicsBody?.contactTestBitMask == 1  ||
+            contact.nodeB.physicsBody?.contactTestBitMask == 2 && contact.nodeA.physicsBody?.contactTestBitMask == 1
+        {
+            conductor.play(frequency: 440, amplitude: 0.5,  playMetalBar: true)
+        }
+    }
+  
+}
+
+// Instrument
+
+class Sleighbells: AKInstrument
+{
+    override init()
+    {
+        super.init()
+        
+        let note = BarNote()
+        addNoteProperty(note.frequency)
+        addNoteProperty(note.amplitude)
+        
+        let instrument = AKSleighbells.presetSoftBells()
+
+        setAudioOutput(instrument)
+    }
+}
+
+class MetalBar: AKInstrument
+{
+    override init()
+    {
+        super.init()
+        
+        let note = BarNote()
+        addNoteProperty(note.frequency)
+        addNoteProperty(note.amplitude)
+        
+        let instrument = AKStruckMetalBar.presetThickDullMetalBar()
+        
+        setAudioOutput(instrument)
+    }
+}
+
+class Conductor
+{
+    let sleighbells = Sleighbells()
+    let metalBar = MetalBar()
+    
+    init()
+    {
+        AKOrchestra.addInstrument(metalBar)
+        AKOrchestra.addInstrument(sleighbells)
+    }
+    
+    func play(frequency frequency: Float, amplitude: Float, playMetalBar: Bool)
+    {
+        let barNote = BarNote(frequency: frequency, amplitude: amplitude)
+        barNote.duration.value = 3.0
+        
+        if playMetalBar
+        {
+           metalBar.playNote(barNote)
+        }
+        else
+        {
+            sleighbells.playNote(barNote)
+        }
+    }
+}
+
+class BarNote: AKNote
+{
+    var frequency = AKNoteProperty(value: 0,    minimum: 0, maximum: 1000)
+    var amplitude = AKNoteProperty(value: 0.04, minimum: 0, maximum: 0.25)
+    
+    override init() {
+        super.init()
+        addProperty(frequency)
+        addProperty(amplitude)
+    }
+    
+    convenience init(frequency: Float, amplitude: Float) {
+        self.init()
+        self.frequency.value = frequency
+        self.amplitude.value = amplitude
+    }
+}
+
+
