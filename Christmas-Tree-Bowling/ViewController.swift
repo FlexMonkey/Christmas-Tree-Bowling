@@ -15,6 +15,21 @@ class ViewController: UIViewController
     let halfPi = CGFloat(M_PI_2)
     let velocity = CGFloat(30)
     
+    lazy var resetButton: UIButton =
+    {
+        let button = UIButton()
+        
+        button.setTitle("Reset", forState: UIControlState.Normal)
+        button.setTitleColor(UIColor.lightGrayColor(), forState: UIControlState.Highlighted)
+        button.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        
+        button.layer.borderColor = UIColor.whiteColor().CGColor
+        button.layer.cornerRadius = 4
+        button.layer.borderWidth = 1
+        
+        return button
+    }()
+    
     lazy var sceneKitView: SCNView =
     {
         let scene = SCNScene()
@@ -83,6 +98,9 @@ class ViewController: UIViewController
         super.viewDidLoad()
         
         view.addSubview(sceneKitView)
+        view.addSubview(resetButton)
+        
+        resetButton.addTarget(self, action: "resetTrees", forControlEvents: UIControlEvents.TouchDown)
         
         setupSceneKit()
     }
@@ -91,7 +109,7 @@ class ViewController: UIViewController
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?)
     {
-        guard let touch = touches.first else
+        guard let touch = touches.first where touch.type == UITouchType.Stylus else
         {
             return
         }
@@ -106,7 +124,7 @@ class ViewController: UIViewController
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?)
     {
-        guard let touch = touches.first else
+        guard let touch = touches.first where touch.type == UITouchType.Stylus else
         {
             return
         }
@@ -116,7 +134,7 @@ class ViewController: UIViewController
     
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?)
     {
-        guard let touch = touches.first else
+        guard let touch = touches.first where touch.type == UITouchType.Stylus else
         {
             return
         }
@@ -160,6 +178,38 @@ class ViewController: UIViewController
             5)
     }
   
+    func resetTrees()
+    {
+        trees.forEach{ $0.removeFromParentNode() }
+        
+        let spacing = Float(2.5)
+        
+        for z in 0 ... 4
+        {
+            for x in 0 ... z
+            {
+                let christmasTreeeNode = christmasTreeCompositeNode.flattenedClone()
+                
+                christmasTreeeNode.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic,
+                    shape: SCNPhysicsShape(geometry: christmasTreeeNode.geometry!, options: nil))
+                
+                christmasTreeeNode.physicsBody?.categoryBitMask = 1
+                christmasTreeeNode.physicsBody?.contactTestBitMask = 1
+                
+                christmasTreeeNode.position = SCNVector3((-spacing * Float(z) / 2) + (Float(x) * spacing),
+                    -1,
+                    -Float(z) * spacing)
+                
+                scene.rootNode.addChildNode(christmasTreeeNode)
+                
+                trees.append(christmasTreeeNode)
+            }
+        }
+    }
+    
+    var trees = [SCNNode]()
+    
+    
     // MARK: SceneKit set up
     
     func setupSceneKit()
@@ -197,28 +247,9 @@ class ViewController: UIViewController
         }
         
         // Christmas Trees
-        let spacing = Float(2.5)
+        resetTrees()
+
         
-        for z in 0 ... 4
-        {
-            for x in 0 ... z
-            {
-                let christmasTreeeNode = christmasTreeCompositeNode.flattenedClone()
-                
-                christmasTreeeNode.physicsBody = SCNPhysicsBody(type: SCNPhysicsBodyType.Dynamic,
-                    shape: SCNPhysicsShape(geometry: christmasTreeeNode.geometry!, options: nil))
-                
-                christmasTreeeNode.physicsBody?.categoryBitMask = 1
-                christmasTreeeNode.physicsBody?.contactTestBitMask = 1
-                
-                christmasTreeeNode.position = SCNVector3((-spacing * Float(z) / 2) + (Float(x) * spacing),
-                    -1,
-                    -Float(z) * spacing)
-                
-                scene.rootNode.addChildNode(christmasTreeeNode)
-            }
-        }
-      
         // Ball
         ballNode.position = SCNVector3(0, 0, 5)
         ballNode.rotation = SCNVector4(0.2, 0.3, 0.4, 1)
@@ -319,11 +350,20 @@ class ViewController: UIViewController
         snowParticleSystem.affectedByPhysicsFields = true
     }
     
+    // MARK: Layout
+    
     override func viewDidLayoutSubviews()
     {
         sceneKitView.frame = view.bounds
+        
+        resetButton.frame = CGRect(origin: CGPointZero,
+            size: resetButton.intrinsicContentSize())
     }
     
+    override func prefersStatusBarHidden() -> Bool
+    {
+        return true
+    }
 }
 
 // MARK: SCNPhysicsContactDelegate
@@ -336,14 +376,14 @@ extension ViewController: SCNPhysicsContactDelegate
         
         if contact.nodeA.physicsBody?.contactTestBitMask == 1 ||  contact.nodeB.physicsBody?.contactTestBitMask == 1
         {
-            conductor.play(frequency: 440, amplitude: 0.3,  playMetalBar: false)
+            conductor.play(frequency: 440, amplitude: 0.05,  playMetalBar: false)
         }
         
         
         if contact.nodeA.physicsBody?.contactTestBitMask == 2 && contact.nodeB.physicsBody?.contactTestBitMask == 1  ||
             contact.nodeB.physicsBody?.contactTestBitMask == 2 && contact.nodeA.physicsBody?.contactTestBitMask == 1
         {
-            conductor.play(frequency: 440, amplitude: 0.5,  playMetalBar: true)
+            conductor.play(frequency: 440, amplitude: 0.1,  playMetalBar: true)
         }
     }
   
@@ -397,7 +437,7 @@ class Conductor
     func play(frequency frequency: Float, amplitude: Float, playMetalBar: Bool)
     {
         let barNote = BarNote(frequency: frequency, amplitude: amplitude)
-        barNote.duration.value = 3.0
+        barNote.duration.value = 1.0
         
         if playMetalBar
         {
