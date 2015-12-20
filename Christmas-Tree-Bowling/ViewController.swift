@@ -36,7 +36,7 @@ class ViewController: UIViewController
         let view = SCNView()
         view.backgroundColor = UIColor.blackColor()
         view.scene = scene
-     
+        
         scene.physicsWorld.contactDelegate = self
         
         view.showsStatistics = true
@@ -315,13 +315,13 @@ class ViewController: UIViewController
         
         // Snow
 
-        let snowPlane = SCNPlane(width: 10, height: 5)
+        let snowPlane = SCNPlane(width: 15, height: 5)
         let snowNode = SCNNode(geometry: snowPlane)
 
         snowNode.position = SCNVector3(0, 7, 0)
         snowNode.eulerAngles = SCNVector3(Float(M_PI_2), Float(0.0), Float(0.0))
         
-        let field = SCNPhysicsField.noiseFieldWithSmoothness(1, animationSpeed: 0.1)
+        let field = SCNPhysicsField.noiseFieldWithSmoothness(1, animationSpeed: 0.25)
         field.falloffExponent = 0
         field.strength = 0.5
         
@@ -333,7 +333,7 @@ class ViewController: UIViewController
         scene.rootNode.addChildNode(snowNode)
         
         let snowParticleSystem = SCNParticleSystem()
-        snowParticleSystem.birthRate = 750
+        snowParticleSystem.birthRate = 2000
         snowParticleSystem.particleLifeSpan = 10
         snowParticleSystem.particleDiesOnCollision = true
         snowParticleSystem.colliderNodes = [floorNode]
@@ -343,11 +343,23 @@ class ViewController: UIViewController
         
         snowParticleSystem.emitterShape = snowNode.geometry!
 
-        snowParticleSystem.particleSize = 0.008
+        snowParticleSystem.particleSize = 0.004
         
         snowNode.addParticleSystem(snowParticleSystem)
 
         snowParticleSystem.affectedByPhysicsFields = true
+        
+        // Background
+        
+        let sky = MDLSkyCubeTexture(name: nil,
+            channelEncoding: MDLTextureChannelEncoding.UInt8,
+            textureDimensions: [Int32(160), Int32(160)],
+            turbidity: 0.65,
+            sunElevation: 0.25,
+            upperAtmosphereScattering: 0.05,
+            groundAlbedo: 0.85)
+        
+         scene.background.contents = sky.imageFromTexture()?.takeUnretainedValue()
     }
     
     // MARK: Layout
