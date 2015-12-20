@@ -1,6 +1,8 @@
 # Christmas-Tree-Bowling
 Apple Pencil Controlled Christmas Tree Bowling!
 
+![screenshot](Christmas-Tree-Bowling/assets/screenshot.jpg)
+
 Here's some festive fun: an Apple Pencil controlled bowling game using SceneKit. The Pencil controls the bowling ball's direction and, since it's Christmas, the pins are Christmas trees. The audio is, of course, handled by AudioKit.
 
 This project was slightly cobbled together in a hurry to get it out during the festive season and, with that in mind, I hope you'll forgive the fact that everything is jammed into a single view controller. 
