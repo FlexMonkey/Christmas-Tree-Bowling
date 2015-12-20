@@ -27,7 +27,7 @@ class ViewController: UIViewController
         button.layer.cornerRadius = 4
         button.layer.borderWidth = 1
         
-        return button
+        return button 
     }()
     
     lazy var sceneKitView: SCNView =

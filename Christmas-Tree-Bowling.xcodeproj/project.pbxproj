@@ -11,6 +11,7 @@
 		3E28DD4D1C23D1D6001AA12C /* winterNight.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E28DD4C1C23D1D6001AA12C /* winterNight.jpg */; };
 		3E28DD5F1C2527E1001AA12C /* libAudioKit iOS Static.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E28DD561C252797001AA12C /* libAudioKit iOS Static.a */; };
 		3E28DD621C252882001AA12C /* AudioKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E28DD611C252882001AA12C /* AudioKit.swift */; };
+		3E28DD6B1C268321001AA12C /* screenshot.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E28DD6A1C268321001AA12C /* screenshot.jpg */; };
 		3E6349D31C1FFB1600DEB44A /* bumpMap.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 3E6349D21C1FFB1600DEB44A /* bumpMap.jpg */; };
 		3ED74A181C1FD2870081169A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED74A171C1FD2870081169A /* AppDelegate.swift */; };
 		3ED74A1A1C1FD2870081169A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ED74A191C1FD2870081169A /* ViewController.swift */; };
@@ -63,6 +64,7 @@
 		3E28DD4E1C252797001AA12C /* AudioKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioKit.xcodeproj; path = AudioKit/AudioKit.xcodeproj; sourceTree = "<group>"; };
 		3E28DD611C252882001AA12C /* AudioKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioKit.swift; path = AudioKit/AudioKit/Platforms/Swift/AudioKit.swift; sourceTree = "<group>"; };
 		3E28DD631C25296C001AA12C /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Header.h; path = "Christmas-Tree-Bowling/Header.h"; sourceTree = "<group>"; };
+		3E28DD6A1C268321001AA12C /* screenshot.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = screenshot.jpg; path = assets/screenshot.jpg; sourceTree = "<group>"; };
 		3E6349D21C1FFB1600DEB44A /* bumpMap.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = bumpMap.jpg; path = assets/bumpMap.jpg; sourceTree = "<group>"; };
 		3ED74A141C1FD2870081169A /* Christmas-Tree-Bowling.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Christmas-Tree-Bowling.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED74A171C1FD2870081169A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 		3E6349D11C1FFB0900DEB44A /* assets */ = {
 			isa = PBXGroup;
 			children = (
+				3E28DD6A1C268321001AA12C /* screenshot.jpg */,
 				3E28DD4C1C23D1D6001AA12C /* winterNight.jpg */,
 				3E28DD4A1C23CD0E001AA12C /* reflection.jpg */,
 				3E6349D21C1FFB1600DEB44A /* bumpMap.jpg */,
@@ -238,6 +241,7 @@
 				3E6349D31C1FFB1600DEB44A /* bumpMap.jpg in Resources */,
 				3ED74A221C1FD2870081169A /* LaunchScreen.storyboard in Resources */,
 				3ED74A1F1C1FD2870081169A /* Assets.xcassets in Resources */,
+				3E28DD6B1C268321001AA12C /* screenshot.jpg in Resources */,
 				3ED74A1D1C1FD2870081169A /* Main.storyboard in Resources */,
 				3E28DD4B1C23CD0E001AA12C /* reflection.jpg in Resources */,
 				3E28DD4D1C23D1D6001AA12C /* winterNight.jpg in Resources */,
