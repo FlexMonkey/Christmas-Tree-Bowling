@@ -120,7 +120,7 @@ What would a Christmas scene be without some snow? My snow effect is a SceneKit 
     snowNode.eulerAngles = SCNVector3(Float(M_PI_2), Float(0.0), Float(0.0))
 
     scene.rootNode.addChildNode(snowNode)
-    ```
+```
 
 Then I create a smooth noise field to get the snow particles drifting around rather than falling straight down:
 
